@@ -25,6 +25,11 @@ public class Utils {
     Location loc = player.getTargetBlock(10).getLocation().add(0.5, 1, 0.5);
     Block targetBlock = player.getTargetBlock(10);
 
+    if (loc.getNearbyEntitiesByType(Skeleton.class, 0, 1, 0).size() > 0) {
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot place that here!"));
+      return;
+    }
+
     if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid()) {
       player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, config));
     } else {

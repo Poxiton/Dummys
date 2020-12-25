@@ -6,7 +6,7 @@
 
   <groupId>com.github.poxiton</groupId>
   <artifactId>Dummys</artifactId>
-  <version>1.0-alpha</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
   <name>Dummys</name>
   <!-- FIXME change it to the project's website -->
