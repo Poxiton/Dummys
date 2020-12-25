@@ -1,0 +1,11 @@
+name: Dummys
+version: 1.0-alpha
+api-version: 1.16
+author: Poxiton
+main: com.github.poxiton.Dummys
+commands:
+   dummy:
+      description: This is a dummy command.
+      usage: /<command> [create | delete | help]
+      permission: dummys.dummy
+      permission-message: "§cYou don't have permission to use this command!"
