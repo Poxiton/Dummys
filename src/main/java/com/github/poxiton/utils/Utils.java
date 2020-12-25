@@ -30,7 +30,7 @@ public class Utils {
       return;
     }
 
-    if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid()) {
+    if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid() && !targetBlock.isEmpty()) {
       player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, config));
     } else {
       player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot place that here!"));
