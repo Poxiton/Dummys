@@ -1,5 +1,5 @@
 # Dummys
-It is a minecraft plugin for creating dummys.
+It is a minecraft plugin for creating dummies.
 
 ## Commands
 - /dummy create
