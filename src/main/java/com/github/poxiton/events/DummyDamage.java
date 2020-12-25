@@ -40,17 +40,21 @@ public class DummyDamage implements Listener {
     int totalDamage = Integer.parseInt(entity.getCustomName().substring(2, entity.getCustomName().length() - 3));
     Location entityLocation = entity.getLocation();
 
-    entity.setCustomName(String.format("§a%d§c❤", totalDamage + damage));
+    if (config.getBoolean("TotalDamage")) {
+      entity.setCustomName(String.format("§a%d§c❤", totalDamage + damage));
 
-    if (timers.containsKey(entityLocation))
-      Bukkit.getScheduler().cancelTask(timers.get(entityLocation));
+      if (timers.containsKey(entityLocation))
+        Bukkit.getScheduler().cancelTask(timers.get(entityLocation));
 
-    timers.put(entityLocation, Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-      entity.setCustomName("§a0§c❤");
-    }, config.getInt("DummyRestartTime") * 20));
+      timers.put(entityLocation, Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+        entity.setCustomName("§a0§c❤");
+      }, config.getInt("DummyRestartTime") * 20));
+    } else {
+      entity.setCustomName(String.format("§a%d§c❤", health));
+    }
 
     if (damage > health)
-      entity.setHealth(2048);
+      entity.setHealth(config.getInt("DummyHealth"));
   }
 
 }

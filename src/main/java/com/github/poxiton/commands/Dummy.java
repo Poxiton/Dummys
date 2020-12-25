@@ -7,15 +7,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class Dummy implements CommandExecutor {
 
   private final Dummys plugin;
+  private FileConfiguration config;
 
-  public Dummy(Dummys dummy) {
+  public Dummy(Dummys dummy, FileConfiguration config) {
     this.plugin = dummy;
+    this.config = config;
   }
 
   @Override
@@ -38,7 +41,7 @@ public class Dummy implements CommandExecutor {
 
       } else if (args[0].equalsIgnoreCase("create")) {
 
-        Utils.createDummy(player);
+        Utils.createDummy(player, config);
 
       } else if (args[0].equalsIgnoreCase("delete")) {
 

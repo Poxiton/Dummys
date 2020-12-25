@@ -1,2 +1,8 @@
 # Time to restart total damage after last hit (seconds)
 DummyRestartTime: 4
+
+# True - total damage / False - entity health
+TotalDamage: true
+
+# Set dummy health (Max 2048)
+DummyHealth: 2048

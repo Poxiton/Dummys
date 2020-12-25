@@ -7,6 +7,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
@@ -20,12 +21,12 @@ public class Utils {
    *
    * @param player Represents a player
    */
-  public static void createDummy(Player player) {
+  public static void createDummy(Player player, FileConfiguration config) {
     Location loc = player.getTargetBlock(10).getLocation().add(0.5, 1, 0.5);
     Block targetBlock = player.getTargetBlock(10);
 
     if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid()) {
-      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player));
+      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, config));
     } else {
       player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot place that here!"));
     }

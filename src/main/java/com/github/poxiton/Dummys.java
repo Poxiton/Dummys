@@ -15,7 +15,7 @@ public class Dummys extends JavaPlugin {
         FileConfiguration config = this.getConfig();
 
         getServer().getPluginManager().registerEvents(new DummyDamage(this, config), this);
-        this.getCommand("dummy").setExecutor(new Dummy(this));
+        this.getCommand("dummy").setExecutor(new Dummy(this, config));
         this.getCommand("dummy").setTabCompleter(new DummyCompletion());
     }
 
