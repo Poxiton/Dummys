@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
@@ -17,8 +18,11 @@ public class DummyDamage implements Listener {
 
   private Plugin plugin;
 
-  public DummyDamage(Plugin plugin) {
+  private FileConfiguration config;
+
+  public DummyDamage(Plugin plugin, FileConfiguration config) {
     this.plugin = plugin;
+    this.config = config;
   }
 
   @EventHandler
@@ -43,7 +47,7 @@ public class DummyDamage implements Listener {
 
     timers.put(entityLocation, Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
       entity.setCustomName("§a0§c❤");
-    }, 80));
+    }, config.getInt("DummyRestartTime") * 20));
 
     if (damage > health)
       entity.setHealth(2048);
