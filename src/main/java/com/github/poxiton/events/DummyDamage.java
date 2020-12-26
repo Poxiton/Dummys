@@ -1,17 +1,14 @@
 package com.github.poxiton.events;
 
-import java.util.HashMap;
-
-import com.github.poxiton.entities.DummyModel;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
 public class DummyDamage implements Listener {
@@ -20,12 +17,9 @@ public class DummyDamage implements Listener {
 
   private FileConfiguration config;
 
-  private HashMap<Location, DummyModel> dummies;
-
-  public DummyDamage(Plugin plugin, FileConfiguration config, HashMap<Location, DummyModel> dummies) {
+  public DummyDamage(Plugin plugin, FileConfiguration config) {
     this.plugin = plugin;
     this.config = config;
-    this.dummies = dummies;
   }
 
   @EventHandler
@@ -34,27 +28,26 @@ public class DummyDamage implements Listener {
       return;
 
     LivingEntity entity = (LivingEntity) event.getEntity();
-    Location entityLocation = entity.getLocation();
 
-    if (!dummies.containsKey(entityLocation))
-      return;
+    PersistentDataContainer dummyData = entity.getPersistentDataContainer();
 
     int damage = (int) event.getDamage();
     int health = (int) entity.getHealth();
-
-    DummyModel dummy = dummies.get(entityLocation);
-    dummy.totalDamage += damage;
+    int totalDamage = dummyData.get(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER) + damage;
+    int taskId = dummyData.get(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER);
 
     if (config.getBoolean("TotalDamage")) {
-      entity.setCustomName(String.format("§a%d§c❤", dummy.totalDamage));
+      entity.setCustomName(String.format("§a%d§c❤", totalDamage));
+      dummyData.set(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER, totalDamage);
 
-      if (dummies.get(entityLocation).taskId != -1)
-        Bukkit.getScheduler().cancelTask(dummies.get(entityLocation).taskId);
+      if (taskId != -1)
+        Bukkit.getScheduler().cancelTask(taskId);
 
-      dummies.get(entityLocation).taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-        dummy.totalDamage = 0;
-        entity.setCustomName(String.format("§a%d§c❤", dummy.totalDamage));
-      }, config.getInt("DummyRestartTime") * 20);
+      dummyData.set(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER,
+          Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            dummyData.set(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER, 0);
+            entity.setCustomName("§a0§c❤");
+          }, config.getInt("DummyRestartTime") * 20));
     } else {
       entity.setCustomName(String.format("§a%d§c❤", health));
     }

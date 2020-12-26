@@ -1,13 +1,8 @@
 package com.github.poxiton.commands;
 
-import java.util.HashMap;
-
 import com.github.poxiton.Dummys;
-import com.github.poxiton.entities.DummyModel;
-import com.github.poxiton.utils.Utils;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,12 +14,10 @@ public class Dummy implements CommandExecutor {
 
   private final Dummys plugin;
   private FileConfiguration config;
-  private HashMap<Location, DummyModel> dummies;
 
-  public Dummy(Dummys dummy, FileConfiguration config, HashMap<Location, DummyModel> dummies) {
-    this.plugin = dummy;
+  public Dummy(Dummys plugin, FileConfiguration config) {
+    this.plugin = plugin;
     this.config = config;
-    this.dummies = dummies;
   }
 
   @Override
@@ -47,11 +40,11 @@ public class Dummy implements CommandExecutor {
 
       } else if (args[0].equalsIgnoreCase("create")) {
 
-        Utils.createDummy(player, config, dummies);
+        plugin.createDummy(player, config);
 
       } else if (args[0].equalsIgnoreCase("delete")) {
 
-        Utils.deleteDummy(player, target, dummies);
+        plugin.deleteDummy(player, target);
 
       }
 
