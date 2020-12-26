@@ -1,5 +1,8 @@
 package com.github.poxiton.utils;
 
+import java.util.HashMap;
+
+import com.github.poxiton.entities.DummyModel;
 import com.github.poxiton.entities.DummySkeleton;
 
 import org.bukkit.ChatColor;
@@ -21,7 +24,7 @@ public class Utils {
    *
    * @param player Represents a player
    */
-  public static void createDummy(Player player, FileConfiguration config) {
+  public static void createDummy(Player player, FileConfiguration config, HashMap<Location, DummyModel> dummies) {
     Location loc = player.getTargetBlock(10).getLocation().add(0.5, 1, 0.5);
     Block targetBlock = player.getTargetBlock(10);
 
@@ -31,7 +34,7 @@ public class Utils {
     }
 
     if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid() && !targetBlock.isEmpty()) {
-      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, config));
+      dummies.put(player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, config)).getLocation(), new DummyModel());
     } else {
       player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot place that here!"));
     }
@@ -43,9 +46,10 @@ public class Utils {
    * @param player Represents a player
    * @param target Represents a dummy
    */
-  public static boolean deleteDummy(Player player, LivingEntity target) {
+  public static boolean deleteDummy(Player player, LivingEntity target, HashMap<Location, DummyModel> dummies) {
     if (target != null && !target.hasAI() && target instanceof Skeleton) {
       target.remove();
+      dummies.remove(target.getLocation());
       return true;
     }
     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThis is not a dummy!"));

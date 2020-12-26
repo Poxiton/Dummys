@@ -2,6 +2,8 @@ package com.github.poxiton.events;
 
 import java.util.HashMap;
 
+import com.github.poxiton.entities.DummyModel;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,15 +16,16 @@ import org.bukkit.plugin.Plugin;
 
 public class DummyDamage implements Listener {
 
-  HashMap<Location, Integer> timers = new HashMap<Location, Integer>();
-
   private Plugin plugin;
 
   private FileConfiguration config;
 
-  public DummyDamage(Plugin plugin, FileConfiguration config) {
+  private HashMap<Location, DummyModel> dummies;
+
+  public DummyDamage(Plugin plugin, FileConfiguration config, HashMap<Location, DummyModel> dummies) {
     this.plugin = plugin;
     this.config = config;
+    this.dummies = dummies;
   }
 
   @EventHandler
@@ -35,20 +38,26 @@ public class DummyDamage implements Listener {
     if (entity.hasAI() || !(entity instanceof Skeleton))
       return;
 
+    System.out.println(dummies);
+
     int damage = (int) event.getDamage();
     int health = (int) entity.getHealth();
-    int totalDamage = Integer.parseInt(entity.getCustomName().substring(2, entity.getCustomName().length() - 3));
     Location entityLocation = entity.getLocation();
 
+    System.out.println(entityLocation);
+    DummyModel dummy = dummies.get(entityLocation);
+    dummy.totalDamage += damage;
+
     if (config.getBoolean("TotalDamage")) {
-      entity.setCustomName(String.format("§a%d§c❤", totalDamage + damage));
+      entity.setCustomName(String.format("§a%d§c❤", dummy.totalDamage));
 
-      if (timers.containsKey(entityLocation))
-        Bukkit.getScheduler().cancelTask(timers.get(entityLocation));
+      if (dummies.get(entityLocation).taskId != -1)
+        Bukkit.getScheduler().cancelTask(dummies.get(entityLocation).taskId);
 
-      timers.put(entityLocation, Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-        entity.setCustomName("§a0§c❤");
-      }, config.getInt("DummyRestartTime") * 20));
+      dummies.get(entityLocation).taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+        dummy.totalDamage = 0;
+        entity.setCustomName(String.format("§a%d§c❤", dummy.totalDamage));
+      }, config.getInt("DummyRestartTime") * 20);
     } else {
       entity.setCustomName(String.format("§a%d§c❤", health));
     }
