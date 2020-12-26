@@ -31,7 +31,11 @@ public class DamageListener implements Listener {
 
     PersistentDataContainer dummyData = entity.getPersistentDataContainer();
 
-    int totalDamage = dummyData.get(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER) + (int) event.getDamage();
+    if (!dummyData.has(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER))
+      return;
+
+    int totalDamage = dummyData.get(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER)
+        + (int) event.getDamage();
     int taskId = dummyData.get(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER);
 
     entity.setCustomName(String.format("§a%d§c❤", totalDamage));
