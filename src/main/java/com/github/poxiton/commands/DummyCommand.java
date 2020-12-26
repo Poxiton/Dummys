@@ -1,5 +1,7 @@
 package com.github.poxiton.commands;
 
+import java.util.stream.Collectors;
+
 import com.github.poxiton.DummyManager;
 import com.github.poxiton.Dummys;
 
@@ -36,10 +38,10 @@ public class DummyCommand implements CommandExecutor {
     if (args.length == 1) {
       if (args[0].equalsIgnoreCase("help")) {
 
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c====================================="));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/dummy create - Use to create a dummy"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e/dummy delete - Use to delete a dummy"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c====================================="));
+        String message = config.getList("HelpMessage").stream().map(n -> String.valueOf(n))
+            .collect(Collectors.joining(" "));
+
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
 
       } else if (args[0].equalsIgnoreCase("create")) {
 
@@ -47,7 +49,7 @@ public class DummyCommand implements CommandExecutor {
 
       } else if (args[0].equalsIgnoreCase("delete")) {
 
-        manager.deleteDummy(player, target);
+        manager.deleteDummy(player, target, config);
 
       }
 

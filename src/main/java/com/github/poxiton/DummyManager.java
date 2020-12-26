@@ -52,10 +52,10 @@ public class DummyManager {
    * @param player Represents a player
    * @param target Represents a dummy
    */
-  public boolean deleteDummy(Player player, LivingEntity target) {
+  public boolean deleteDummy(Player player, LivingEntity target, FileConfiguration config) {
     if (target == null || !target.getPersistentDataContainer().has(new NamespacedKey(plugin, "totalDamage"),
         PersistentDataType.INTEGER)) {
-      player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThis is not a dummy!"));
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotDummy")));
       return true;
     }
     target.remove();
