@@ -47,7 +47,7 @@ public class Utils {
    * @param target Represents a dummy
    */
   public static boolean deleteDummy(Player player, LivingEntity target, HashMap<Location, DummyModel> dummies) {
-    if (target != null && !target.hasAI() && target instanceof Skeleton) {
+    if (!dummies.containsKey(target.getLocation())) {
       target.remove();
       dummies.remove(target.getLocation());
       return true;
