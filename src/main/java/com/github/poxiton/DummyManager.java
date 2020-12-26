@@ -68,20 +68,26 @@ public class DummyManager {
    * @param skeleton Represents a Skeleton (Dummy)
    */
   public void setItems(Skeleton skeleton) {
-    ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
-    LeatherArmorMeta helmetmeta = (LeatherArmorMeta) helmet.getItemMeta();
-    helmetmeta.setColor(Color.RED);
-    helmetmeta.setUnbreakable(true);
-    helmet.setItemMeta(helmetmeta);
-
-    ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
-    LeatherArmorMeta chestplatemeta = (LeatherArmorMeta) chestplate.getItemMeta();
-    chestplatemeta.setColor(Color.ORANGE);
-    chestplatemeta.setUnbreakable(true);
-    chestplate.setItemMeta(chestplatemeta);
-
-    skeleton.getEquipment().setHelmet(helmet);
-    skeleton.getEquipment().setChestplate(chestplate);
+    skeleton.getEquipment().setHelmet(createItem(Material.LEATHER_HELMET, Color.RED, true));
+    skeleton.getEquipment().setChestplate(createItem(Material.LEATHER_CHESTPLATE, Color.ORANGE, true));
     skeleton.getEquipment().setItemInMainHand(new ItemStack(Material.AIR));
   }
+
+  /**
+   * Create item
+   *
+   * @param material Represents material (item)
+   * @param color Represents color for item
+   * @param unbreak Represents the item is unbreakable
+   */
+  private ItemStack createItem(Material material, Color color, Boolean unbreak) {
+    ItemStack item = new ItemStack(material);
+    LeatherArmorMeta itemmeta = (LeatherArmorMeta) item.getItemMeta();
+    itemmeta.setColor(color);
+    itemmeta.setUnbreakable(unbreak);
+    item.setItemMeta(itemmeta);
+
+    return item;
+  }
+
 }
