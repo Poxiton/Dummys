@@ -1,5 +1,6 @@
 package com.github.poxiton.commands;
 
+import com.github.poxiton.DummyManager;
 import com.github.poxiton.Dummys;
 
 import org.bukkit.ChatColor;
@@ -10,14 +11,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class Dummy implements CommandExecutor {
+public class DummyCommand implements CommandExecutor {
 
   private final Dummys plugin;
   private FileConfiguration config;
+  private DummyManager manager;
 
-  public Dummy(Dummys plugin, FileConfiguration config) {
+  public DummyCommand(Dummys plugin, FileConfiguration config, DummyManager manager) {
     this.plugin = plugin;
     this.config = config;
+    this.manager = manager;
   }
 
   @Override
@@ -40,11 +43,11 @@ public class Dummy implements CommandExecutor {
 
       } else if (args[0].equalsIgnoreCase("create")) {
 
-        plugin.createDummy(player, config);
+        manager.createDummy(player, config);
 
       } else if (args[0].equalsIgnoreCase("delete")) {
 
-        plugin.deleteDummy(player, target);
+        manager.deleteDummy(player, target);
 
       }
 
