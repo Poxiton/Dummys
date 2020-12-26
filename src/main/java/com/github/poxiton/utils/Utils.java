@@ -26,14 +26,14 @@ public class Utils {
     Block targetBlock = player.getTargetBlock(10);
 
     if (loc.getNearbyEntitiesByType(Skeleton.class, 0, 1, 0).size() > 0) {
-      player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot place that here!"));
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotHere")));
       return;
     }
 
     if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid() && !targetBlock.isEmpty()) {
       player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, config));
     } else {
-      player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot place that here!"));
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotHere")));
     }
   }
 
@@ -43,12 +43,12 @@ public class Utils {
    * @param player Represents a player
    * @param target Represents a dummy
    */
-  public static boolean deleteDummy(Player player, LivingEntity target) {
+  public static boolean deleteDummy(Player player, LivingEntity target, FileConfiguration config) {
     if (target != null && !target.hasAI() && target instanceof Skeleton) {
       target.remove();
       return true;
     }
-    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThis is not a dummy!"));
+    player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotDummy")));
     return true;
   }
 
