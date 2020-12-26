@@ -34,17 +34,14 @@ public class DummyDamage implements Listener {
       return;
 
     LivingEntity entity = (LivingEntity) event.getEntity();
+    Location entityLocation = entity.getLocation();
 
-    if (entity.hasAI() || !(entity instanceof Skeleton))
+    if (!dummies.containsKey(entityLocation))
       return;
-
-    System.out.println(dummies);
 
     int damage = (int) event.getDamage();
     int health = (int) entity.getHealth();
-    Location entityLocation = entity.getLocation();
 
-    System.out.println(entityLocation);
     DummyModel dummy = dummies.get(entityLocation);
     dummy.totalDamage += damage;
 

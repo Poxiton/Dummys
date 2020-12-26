@@ -1,7 +1,6 @@
 package com.github.poxiton.commands;
 
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 import com.github.poxiton.Dummys;
 import com.github.poxiton.entities.DummyModel;
