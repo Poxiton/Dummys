@@ -1,22 +1,26 @@
 package com.github.poxiton;
 
-import com.github.poxiton.commands.Dummy;
-import com.github.poxiton.commands.DummyCompletion;
-import com.github.poxiton.events.DummyDamage;
+import com.github.poxiton.commands.DummyCommand;
+import com.github.poxiton.events.DamageListener;
+import com.github.poxiton.utils.CommandCompletion;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Dummys extends JavaPlugin {
 
+    DummyManager manager;
+
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
         FileConfiguration config = this.getConfig();
 
-        getServer().getPluginManager().registerEvents(new DummyDamage(this, config), this);
-        this.getCommand("dummy").setExecutor(new Dummy(this, config));
-        this.getCommand("dummy").setTabCompleter(new DummyCompletion());
+        manager = new DummyManager(this);
+
+        getServer().getPluginManager().registerEvents(new DamageListener(this, config), this);
+        this.getCommand("dummy").setExecutor(new DummyCommand(this, config, manager));
+        this.getCommand("dummy").setTabCompleter(new CommandCompletion());
     }
 
 }

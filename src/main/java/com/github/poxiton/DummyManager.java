@@ -1,4 +1,4 @@
-package com.github.poxiton.utils;
+package com.github.poxiton;
 
 import com.github.poxiton.entities.DummySkeleton;
 
@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -13,15 +14,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 
-public class Utils {
+public class DummyManager {
+
+  private Plugin plugin;
+
+  public DummyManager(Plugin plugin) {
+    this.plugin = plugin;
+  }
 
   /**
    * Create a dummy
    *
    * @param player Represents a player
    */
-  public static void createDummy(Player player, FileConfiguration config) {
+  public void createDummy(Player player, FileConfiguration config) {
     Location loc = player.getTargetBlock(10).getLocation().add(0.5, 1, 0.5);
     Block targetBlock = player.getTargetBlock(10);
 
@@ -31,7 +40,7 @@ public class Utils {
     }
 
     if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid() && !targetBlock.isEmpty()) {
-      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, config));
+      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, plugin, this));
     } else {
       player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotHere")));
     }
@@ -43,12 +52,13 @@ public class Utils {
    * @param player Represents a player
    * @param target Represents a dummy
    */
-  public static boolean deleteDummy(Player player, LivingEntity target, FileConfiguration config) {
-    if (target != null && !target.hasAI() && target instanceof Skeleton) {
-      target.remove();
+  public boolean deleteDummy(Player player, LivingEntity target, FileConfiguration config) {
+    if (target == null || !target.getPersistentDataContainer().has(new NamespacedKey(plugin, "totalDamage"),
+        PersistentDataType.INTEGER)) {
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotDummy")));
       return true;
     }
-    player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotDummy")));
+    target.remove();
     return true;
   }
 
@@ -57,7 +67,7 @@ public class Utils {
    *
    * @param skeleton Represents a Skeleton (Dummy)
    */
-  public static void setItems(Skeleton skeleton) {
+  public void setItems(Skeleton skeleton) {
     ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
     LeatherArmorMeta helmetmeta = (LeatherArmorMeta) helmet.getItemMeta();
     helmetmeta.setColor(Color.RED);
