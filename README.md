@@ -16,14 +16,25 @@ It is a minecraft plugin for creating dummies.
 ## Configuration
 You can find the config file at \plugins\Dummys\config.yml. By default it should look like this:
 ```yml
+#  ----------------------------------------------------
+#   Dummys Configuration File
+#  ----------------------------------------------------
+
 # Time to restart total damage after last hit (seconds)
 DummyRestartTime: 4
 
-# True - total damage / False - entity health
-TotalDamage: true
+# Set /dummy help message
+HelpMessage:
+    - "&c=======================================\n"
+    - "&e/dummy create - Use to create a dummy\n"
+    - "&e/dummy delete - Use to delete a dummy\n"
+    - "&c=======================================\n"
 
-# Set dummy health (Max 2048)
-DummyHealth: 2048
+# Set message when dummy can't be placed
+NotHere: "&cYou cannot place that here!"
+
+# Set message when entity is not dummy
+NotDummy: "&cThis is not a dummy!"
 ```
 
 ## License
