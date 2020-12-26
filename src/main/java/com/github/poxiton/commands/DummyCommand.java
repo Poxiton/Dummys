@@ -49,11 +49,7 @@ public class DummyCommand implements CommandExecutor {
 
       } else if (args[0].equalsIgnoreCase("delete")) {
 
-<<<<<<< HEAD:src/main/java/com/github/poxiton/commands/Dummy.java
-        Utils.deleteDummy(player, target, config);
-=======
         manager.deleteDummy(player, target, config);
->>>>>>> optimalization:src/main/java/com/github/poxiton/commands/DummyCommand.java
 
       }
 
