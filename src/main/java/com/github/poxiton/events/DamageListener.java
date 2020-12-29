@@ -36,21 +36,24 @@ public class DamageListener implements Listener {
 
     int totalDamage = dummyData.get(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER)
         + (int) event.getDamage();
-    int taskId = dummyData.get(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER);
 
     entity.setCustomName(String.format("§a%d§c❤", totalDamage));
     entity.setHealth(2048);
 
     dummyData.set(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER, totalDamage);
 
-    if (taskId != -1)
-      Bukkit.getScheduler().cancelTask(taskId);
+    if (config.getBoolean("DummyReset")) {
+      int taskId = dummyData.get(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER);
 
-    dummyData.set(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER,
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-          dummyData.set(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER, 0);
-          entity.setCustomName("§a0§c❤");
-        }, config.getInt("DummyRestartTime") * 20));
+      if (taskId != -1)
+        Bukkit.getScheduler().cancelTask(taskId);
+
+      dummyData.set(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER,
+          Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            dummyData.set(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER, 0);
+            entity.setCustomName("§a0§c❤");
+          }, config.getInt("DummyRestartTime") * 20));
+    }
   }
 
 }

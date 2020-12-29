@@ -5,6 +5,9 @@
 # Time to restart total damage after last hit (seconds)
 DummyRestartTime: 4
 
+# True - auto reset total damage / False - dummy does not restart until deleted
+DummyReset: true
+
 # Set /dummy help message
 HelpMessage:
     - "&c=======================================\n"
