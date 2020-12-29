@@ -40,7 +40,7 @@ public class DummyManager {
     }
 
     if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid() && !targetBlock.isEmpty()) {
-      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, plugin, this));
+      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, plugin, this, config));
     } else {
       player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotHere")));
     }

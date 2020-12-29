@@ -8,6 +8,9 @@ DummyRestartTime: 4
 # True - auto reset total damage / False - dummy does not restart until deleted
 DummyReset: true
 
+# Initial damage value of the dummy
+DummyDamage: 0
+
 # Set /dummy help message
 HelpMessage:
     - "&c=======================================\n"
