@@ -16,6 +16,7 @@ HelpMessage:
     - "&c=======================================\n"
     - "&e/dummy create - Use to create a dummy\n"
     - "&e/dummy delete - Use to delete a dummy\n"
+    - "&e/dummy reload - Use to reload config\n"
     - "&c=======================================\n"
 
 # Set message when dummy can't be placed
@@ -23,3 +24,6 @@ NotHere: "&cYou cannot place that here!"
 
 # Set message when entity is not dummy
 NotDummy: "&cThis is not a dummy!"
+
+# Set (/dummy reload) message
+DummyReload: "&aDummy configuration has been reloaded"

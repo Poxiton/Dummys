@@ -7,7 +7,6 @@ import com.github.poxiton.events.DamageListener;
 import com.github.poxiton.utils.CommandCompletion;
 
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Dummys extends JavaPlugin {
@@ -17,7 +16,6 @@ public class Dummys extends JavaPlugin {
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        FileConfiguration config = this.getConfig();
 
         Logger logger = this.getLogger();
 
@@ -31,8 +29,8 @@ public class Dummys extends JavaPlugin {
 
         manager = new DummyManager(this);
 
-        getServer().getPluginManager().registerEvents(new DamageListener(this, config), this);
-        this.getCommand("dummy").setExecutor(new DummyCommand(this, config, manager));
+        getServer().getPluginManager().registerEvents(new DamageListener(this), this);
+        this.getCommand("dummy").setExecutor(new DummyCommand(this, manager));
         this.getCommand("dummy").setTabCompleter(new CommandCompletion());
     }
 

@@ -9,19 +9,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class DummyCommand implements CommandExecutor {
 
   private final Dummys plugin;
-  private FileConfiguration config;
   private DummyManager manager;
 
-  public DummyCommand(Dummys plugin, FileConfiguration config, DummyManager manager) {
+  public DummyCommand(Dummys plugin, DummyManager manager) {
     this.plugin = plugin;
-    this.config = config;
     this.manager = manager;
   }
 
@@ -38,18 +35,23 @@ public class DummyCommand implements CommandExecutor {
     if (args.length == 1) {
       if (args[0].equalsIgnoreCase("help")) {
 
-        String message = config.getList("HelpMessage").stream().map(n -> String.valueOf(n))
+        String message = plugin.getConfig().getList("HelpMessage").stream().map(n -> String.valueOf(n))
             .collect(Collectors.joining(" "));
 
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
 
       } else if (args[0].equalsIgnoreCase("create")) {
 
-        manager.createDummy(player, config);
+        manager.createDummy(player);
 
       } else if (args[0].equalsIgnoreCase("delete")) {
 
-        manager.deleteDummy(player, target, config);
+        manager.deleteDummy(player, target);
+
+      } else if (args[0].equalsIgnoreCase("reload")) {
+
+        plugin.reloadConfig();
+        player.sendMessage(plugin.getConfig().getString("DummyReload"));
 
       }
 

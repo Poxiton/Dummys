@@ -12,7 +12,7 @@ public class CommandCompletion implements TabCompleter {
   @Override
   public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
     if (args.length == 1) {
-      List<String> completors = Arrays.asList("create", "delete", "help");
+      List<String> completors = Arrays.asList("create", "delete", "help", "reload");
       return completors;
     }
 

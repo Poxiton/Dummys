@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
@@ -30,19 +29,19 @@ public class DummyManager {
    *
    * @param player Represents a player
    */
-  public void createDummy(Player player, FileConfiguration config) {
+  public void createDummy(Player player) {
     Location loc = player.getTargetBlock(10).getLocation().add(0.5, 1, 0.5);
     Block targetBlock = player.getTargetBlock(10);
 
     if (loc.getNearbyEntitiesByType(Skeleton.class, 0, 1, 0).size() > 0) {
-      player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotHere")));
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("NotHere")));
       return;
     }
 
     if (player.getTargetBlockFace(10).toString().equals("UP") && !targetBlock.isLiquid() && !targetBlock.isEmpty()) {
-      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, plugin, this, config));
+      player.getWorld().spawn(loc, Skeleton.class, new DummySkeleton(player, plugin, this));
     } else {
-      player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotHere")));
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("NotHere")));
     }
   }
 
@@ -52,10 +51,10 @@ public class DummyManager {
    * @param player Represents a player
    * @param target Represents a dummy
    */
-  public boolean deleteDummy(Player player, LivingEntity target, FileConfiguration config) {
+  public boolean deleteDummy(Player player, LivingEntity target) {
     if (target == null || !target.getPersistentDataContainer().has(new NamespacedKey(plugin, "totalDamage"),
         PersistentDataType.INTEGER)) {
-      player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("NotDummy")));
+      player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("NotDummy")));
       return true;
     }
     target.remove();

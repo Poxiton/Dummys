@@ -2,7 +2,6 @@ package com.github.poxiton.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,11 +14,8 @@ public class DamageListener implements Listener {
 
   private Plugin plugin;
 
-  private FileConfiguration config;
-
-  public DamageListener(Plugin plugin, FileConfiguration config) {
+  public DamageListener(Plugin plugin) {
     this.plugin = plugin;
-    this.config = config;
   }
 
   @EventHandler
@@ -42,7 +38,7 @@ public class DamageListener implements Listener {
     entity.setCustomName(String.format("§a%d§c❤", totalDamage));
     entity.setHealth(2048);
 
-    if (config.getBoolean("DummyReset")) {
+    if (plugin.getConfig().getBoolean("DummyReset")) {
       int taskId = dummyData.get(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER);
 
       if (taskId != -1)
@@ -51,9 +47,9 @@ public class DamageListener implements Listener {
       dummyData.set(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER,
           Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             dummyData.set(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER,
-                config.getInt("DummyDamage"));
-            entity.setCustomName(String.format("§a%d§c❤", config.getInt("DummyDamage")));
-          }, config.getInt("DummyRestartTime") * 20));
+                plugin.getConfig().getInt("DummyDamage"));
+            entity.setCustomName(String.format("§a%d§c❤", plugin.getConfig().getInt("DummyDamage")));
+          }, plugin.getConfig().getInt("DummyRestartTime") * 20));
     }
   }
 
