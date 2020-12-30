@@ -7,6 +7,9 @@ It is a minecraft plugin for creating dummies.
 - /dummy reload
 - /dummy help
 
+## Permissions
+- dummys.dummy
+
 ## Installing
 1. Download the newest release from the [releases page](https://github.com/Poxiton/Dummys/releases).
 
