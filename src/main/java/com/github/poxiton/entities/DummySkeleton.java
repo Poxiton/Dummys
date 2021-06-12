@@ -31,6 +31,7 @@ public class DummySkeleton implements Consumer<Skeleton> {
     skeleton.setHealth(2048);
     skeleton.setCustomName(String.format("§a%d§c❤", plugin.getConfig().getInt("DummyDamage")));
     skeleton.setAI(false);
+    skeleton.setRemoveWhenFarAway(false);
     skeleton.getPersistentDataContainer().set(new NamespacedKey(plugin, "totalDamage"), PersistentDataType.INTEGER,
         plugin.getConfig().getInt("DummyDamage"));
     skeleton.getPersistentDataContainer().set(new NamespacedKey(plugin, "taskId"), PersistentDataType.INTEGER, -1);
