@@ -7,6 +7,9 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -76,14 +79,15 @@ public class DummyManager {
    * Create item
    *
    * @param material Represents material (item)
-   * @param color Represents color for item
-   * @param unbreak Represents the item is unbreakable
+   * @param color    Represents color for item
+   * @param unbreak  Represents the item is unbreakable
    */
   private ItemStack createItem(Material material, Color color, Boolean unbreak) {
     ItemStack item = new ItemStack(material);
     LeatherArmorMeta itemmeta = (LeatherArmorMeta) item.getItemMeta();
     itemmeta.setColor(color);
     itemmeta.setUnbreakable(unbreak);
+    itemmeta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier("armor", -10, Operation.ADD_NUMBER));
     item.setItemMeta(itemmeta);
 
     return item;
